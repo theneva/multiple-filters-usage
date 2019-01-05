@@ -49,7 +49,11 @@ class App extends React.PureComponent<{}, Filters> {
         <div>
           <label>
             Category
-            <select>
+            <select
+              onChange={e =>
+                this.setState({ category: e.target.value as CategoryFilter })
+              }
+            >
               <option value="all">all</option>
               <option value="transport">transport</option>
               <option value="food">food</option>
@@ -61,24 +65,50 @@ class App extends React.PureComponent<{}, Filters> {
           <p style={{ margin: 0, padding: 0 }}>Receipt</p>
           <div>
             <label>
-              <input type="radio" name="receipt" value="all" /> all
+              <input
+                type="radio"
+                name="receipt"
+                value="all"
+                checked={this.state.receipt === 'all'}
+                onChange={() => this.setState({ receipt: 'all' })}
+              />{' '}
+              all
             </label>
           </div>
           <div>
             <label>
-              <input type="radio" name="receipt" value="present" /> present
+              <input
+                type="radio"
+                name="receipt"
+                value="present"
+                checked={this.state.receipt === 'present'}
+                onChange={() => this.setState({ receipt: 'present' })}
+              />{' '}
+              present
             </label>
           </div>
           <div>
             <label>
-              <input type="radio" name="receipt" value="missing" /> missing
+              <input
+                type="radio"
+                name="receipt"
+                value="missing"
+                checked={this.state.receipt === 'missing'}
+                onChange={() => this.setState({ receipt: 'missing' })}
+              />{' '}
+              missing
             </label>
           </div>
         </div>
         <div style={{ marginTop: 8 }}>
           <label>
             Year{' '}
-            <select>
+            <select
+              onChange={e =>
+                this.setState({ year: e.target.value as YearFilter })
+              }
+            >
+              <option value="all">all</option>
               <option value="2017">2017</option>
               <option value="2018">2018</option>
               <option value="2019">2019</option>
