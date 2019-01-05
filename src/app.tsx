@@ -112,7 +112,7 @@ class App extends React.PureComponent<{}, Filters> {
                     return 1;
                   }
 
-                  return left.localeCompare(right);
+                  return right.localeCompare(left);
                 })
                 .map(([year, transactions]) => (
                   <option key={`year-${year}`} value={year}>
@@ -133,8 +133,9 @@ class App extends React.PureComponent<{}, Filters> {
               <th>year</th>
             </thead>
             <tbody>
-              {filteredTransactions.map(
-                ({ description, category, receipt, year }) => (
+              {filteredTransactions
+                .sort((left, right) => right.year.localeCompare(left.year))
+                .map(({ description, category, receipt, year }) => (
                   <tr
                     key={`transaction-${description}-${category}-${receipt}-${year}`}
                   >
@@ -143,8 +144,7 @@ class App extends React.PureComponent<{}, Filters> {
                     <td>{receipt}</td>
                     <td>{year}</td>
                   </tr>
-                ),
-              )}
+                ))}
             </tbody>
           </table>
         </div>
