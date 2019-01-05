@@ -78,6 +78,7 @@ class App extends React.PureComponent<{}, Filters> {
                 name="receipt"
                 value="all"
                 checked={this.state.receipt === 'all'}
+                disabled={groupedTransactions.receipts.all.length === 0}
                 onChange={() => this.setState({ receipt: 'all' })}
               />{' '}
               all
@@ -90,6 +91,7 @@ class App extends React.PureComponent<{}, Filters> {
                 name="receipt"
                 value="present"
                 checked={this.state.receipt === 'present'}
+                disabled={groupedTransactions.receipts.present.length === 0}
                 onChange={() => this.setState({ receipt: 'present' })}
               />{' '}
               present
@@ -102,6 +104,7 @@ class App extends React.PureComponent<{}, Filters> {
                 name="receipt"
                 value="missing"
                 checked={this.state.receipt === 'missing'}
+                disabled={groupedTransactions.receipts.missing.length === 0}
                 onChange={() => this.setState({ receipt: 'missing' })}
               />{' '}
               missing
@@ -116,11 +119,23 @@ class App extends React.PureComponent<{}, Filters> {
                 this.setState({ year: e.target.value as YearFilter })
               }
             >
-              {Object.keys(groupedTransactions.years).map(year => (
-                <option key={`year-${year}`} value={year}>
-                  {year}
-                </option>
-              ))}
+              {Object.keys(groupedTransactions.years)
+                .sort((left, right) => {
+                  if (left === 'all') {
+                    return -1;
+                  }
+
+                  if (right === 'all') {
+                    return 1;
+                  }
+
+                  return left.localeCompare(right);
+                })
+                .map(year => (
+                  <option key={`year-${year}`} value={year}>
+                    {year}
+                  </option>
+                ))}
             </select>
           </label>
         </div>
@@ -137,7 +152,9 @@ class App extends React.PureComponent<{}, Filters> {
             <tbody>
               {filteredTransactions.map(
                 ({ description, category, receipt, year }) => (
-                  <tr>
+                  <tr
+                    key={`transaction-${description}-${category}-${receipt}-${year}`}
+                  >
                     <td>{description}</td>
                     <td>{category}</td>
                     <td>{receipt}</td>
