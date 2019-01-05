@@ -102,8 +102,8 @@ class App extends React.PureComponent<{}, Filters> {
                 this.setState({ year: e.target.value as YearFilter })
               }
             >
-              {Object.keys(groupedTransactions.years)
-                .sort((left, right) => {
+              {Object.entries(groupedTransactions.years)
+                .sort(([left], [right]) => {
                   if (left === 'all') {
                     return -1;
                   }
@@ -114,9 +114,9 @@ class App extends React.PureComponent<{}, Filters> {
 
                   return left.localeCompare(right);
                 })
-                .map(year => (
+                .map(([year, transactions]) => (
                   <option key={`year-${year}`} value={year}>
-                    {year}
+                    {year} ({transactions.length})
                   </option>
                 ))}
             </select>
