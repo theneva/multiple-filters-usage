@@ -88,7 +88,7 @@ class App extends React.PureComponent<{}, Filters> {
                       this.setState({ receipt: receipt as ReceiptFilter })
                     }
                   />
-                  {receipt}
+                  {receipt} ({transactions.length})
                 </label>
               </div>
             ),
