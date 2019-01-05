@@ -41,8 +41,16 @@ class App extends React.PureComponent<{}, Filters> {
   };
 
   render() {
-    // TODO
-    const filteredTransactions = transactions;
+    const groupedTransactions = filterTransactions(transactions, {
+      category: this.state.category,
+      receipt: this.state.receipt,
+      year: this.state.year,
+    });
+
+    // It doesn't matter which one we choose, as everything is filtered
+    // by everything else before having been grouped.
+    const filteredTransactions =
+      groupedTransactions.categories[this.state.category];
 
     return (
       <div>
@@ -108,10 +116,11 @@ class App extends React.PureComponent<{}, Filters> {
                 this.setState({ year: e.target.value as YearFilter })
               }
             >
-              <option value="all">all</option>
-              <option value="2017">2017</option>
-              <option value="2018">2018</option>
-              <option value="2019">2019</option>
+              {Object.keys(groupedTransactions.years).map(year => (
+                <option key={`year-${year}`} value={year}>
+                  {year}
+                </option>
+              ))}
             </select>
           </label>
         </div>
