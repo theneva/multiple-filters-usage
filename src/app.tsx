@@ -3,6 +3,7 @@ import './app.css';
 
 import {
   Transaction,
+  Category,
   Filters,
   CategoryFilter,
   ReceiptFilter,
@@ -32,6 +33,22 @@ const transactions: Transaction[] = [
     year: '2017',
   },
 ];
+
+const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+const categories: Category[] = ['internet', 'transport', 'food'];
+for (let i = 0; i < 4000; i++) {
+  const transaction: Transaction = {
+    description: new Array(8)
+      .fill(0)
+      .map(() => alphabet.charAt(Math.floor(Math.random() * alphabet.length)))
+      .join(''),
+    category: categories[Math.floor(Math.random() * categories.length)],
+    receipt: Math.random() > 0.7 ? 'present' : 'missing',
+    year: `${Math.floor(Math.random() * 4) + 2016}`,
+  };
+
+  transactions.push(transaction);
+}
 
 class App extends React.PureComponent<{}, Filters> {
   state = {
@@ -137,10 +154,12 @@ class App extends React.PureComponent<{}, Filters> {
           Transactions
           <table>
             <thead>
-              <th>description</th>
-              <th>category</th>
-              <th>receipt</th>
-              <th>year</th>
+              <tr>
+                <th>description</th>
+                <th>category</th>
+                <th>receipt</th>
+                <th>year</th>
+              </tr>
             </thead>
             <tbody>
               {filteredTransactions
