@@ -2,3 +2,7 @@ th,
 td {
   padding: 8px;
 }
+
+.form-row {
+  margin-top: 8px;
+}

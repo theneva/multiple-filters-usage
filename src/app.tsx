@@ -56,8 +56,9 @@ class App extends React.PureComponent<{}, Filters> {
       <div>
         <div>
           <label>
-            Category
+            Category{' '}
             <select
+              value={this.state.category}
               onChange={e =>
                 this.setState({ category: e.target.value as CategoryFilter })
               }
@@ -72,7 +73,7 @@ class App extends React.PureComponent<{}, Filters> {
             </select>
           </label>
         </div>
-        <div style={{ marginTop: 8 }}>
+        <div className="form-row">
           <p style={{ margin: 0, padding: 0 }}>Receipt</p>
           {Object.entries(groupedTransactions.receipts).map(
             ([receipt, transactions]) => (
@@ -94,7 +95,7 @@ class App extends React.PureComponent<{}, Filters> {
             ),
           )}
         </div>
-        <div style={{ marginTop: 8 }}>
+        <div className="form-row">
           <label>
             Year{' '}
             <select
@@ -121,6 +122,15 @@ class App extends React.PureComponent<{}, Filters> {
                 ))}
             </select>
           </label>
+        </div>
+        <div className="form-row">
+          <button
+            onClick={() =>
+              this.setState({ category: 'all', receipt: 'all', year: 'all' })
+            }
+          >
+            Reset filters
+          </button>
         </div>
         <hr />
         <div>
