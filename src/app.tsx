@@ -62,54 +62,37 @@ class App extends React.PureComponent<{}, Filters> {
                 this.setState({ category: e.target.value as CategoryFilter })
               }
             >
-              <option value="all">all</option>
-              <option value="transport">transport</option>
-              <option value="food">food</option>
-              <option value="internet">internet</option>
+              {Object.entries(groupedTransactions.categories).map(
+                ([category, transactions]) => (
+                  <option key={`category-${category}`} value={category}>
+                    {category} ({transactions.length})
+                  </option>
+                ),
+              )}
             </select>
           </label>
         </div>
         <div style={{ marginTop: 8 }}>
           <p style={{ margin: 0, padding: 0 }}>Receipt</p>
-          <div>
-            <label>
-              <input
-                type="radio"
-                name="receipt"
-                value="all"
-                checked={this.state.receipt === 'all'}
-                disabled={groupedTransactions.receipts.all.length === 0}
-                onChange={() => this.setState({ receipt: 'all' })}
-              />{' '}
-              all
-            </label>
-          </div>
-          <div>
-            <label>
-              <input
-                type="radio"
-                name="receipt"
-                value="present"
-                checked={this.state.receipt === 'present'}
-                disabled={groupedTransactions.receipts.present.length === 0}
-                onChange={() => this.setState({ receipt: 'present' })}
-              />{' '}
-              present
-            </label>
-          </div>
-          <div>
-            <label>
-              <input
-                type="radio"
-                name="receipt"
-                value="missing"
-                checked={this.state.receipt === 'missing'}
-                disabled={groupedTransactions.receipts.missing.length === 0}
-                onChange={() => this.setState({ receipt: 'missing' })}
-              />{' '}
-              missing
-            </label>
-          </div>
+          {Object.entries(groupedTransactions.receipts).map(
+            ([receipt, transactions]) => (
+              <div key={`receipt-${receipt}`}>
+                <label>
+                  <input
+                    type="radio"
+                    name="receipt"
+                    value={receipt}
+                    checked={this.state.receipt === receipt}
+                    disabled={transactions.length === 0}
+                    onChange={() =>
+                      this.setState({ receipt: receipt as ReceiptFilter })
+                    }
+                  />
+                  {receipt}
+                </label>
+              </div>
+            ),
+          )}
         </div>
         <div style={{ marginTop: 8 }}>
           <label>
