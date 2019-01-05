@@ -8,7 +8,7 @@ import {
   CategoryFilter,
   ReceiptFilter,
   YearFilter,
-  filterTransactions,
+  availableTransactionsByFilter,
 } from 'filters';
 
 const transactions: Transaction[] = [
@@ -58,7 +58,7 @@ class App extends React.PureComponent<{}, Filters> {
   };
 
   render() {
-    const groupedTransactions = filterTransactions(transactions, {
+    const availableTransactions = availableTransactionsByFilter(transactions, {
       category: this.state.category,
       receipt: this.state.receipt,
       year: this.state.year,
@@ -67,7 +67,7 @@ class App extends React.PureComponent<{}, Filters> {
     // It doesn't matter which one we choose, as everything is filtered
     // by everything else before having been grouped.
     const filteredTransactions =
-      groupedTransactions.categories[this.state.category];
+      availableTransactions.categories[this.state.category];
 
     return (
       <div>
@@ -80,7 +80,7 @@ class App extends React.PureComponent<{}, Filters> {
                 this.setState({ category: e.target.value as CategoryFilter })
               }
             >
-              {Object.entries(groupedTransactions.categories).map(
+              {Object.entries(availableTransactions.categories).map(
                 ([category, transactions]) => (
                   <option key={`category-${category}`} value={category}>
                     {category} ({transactions.length})
@@ -92,7 +92,7 @@ class App extends React.PureComponent<{}, Filters> {
         </div>
         <div className="form-row">
           <p style={{ margin: 0, padding: 0 }}>Receipt</p>
-          {Object.entries(groupedTransactions.receipts).map(
+          {Object.entries(availableTransactions.receipts).map(
             ([receipt, transactions]) => (
               <div key={`receipt-${receipt}`}>
                 <label>
@@ -120,7 +120,7 @@ class App extends React.PureComponent<{}, Filters> {
                 this.setState({ year: e.target.value as YearFilter })
               }
             >
-              {Object.entries(groupedTransactions.years)
+              {Object.entries(availableTransactions.years)
                 .sort(([left], [right]) => {
                   if (left === 'all') {
                     return -1;
